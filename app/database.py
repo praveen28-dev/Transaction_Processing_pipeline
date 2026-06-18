@@ -1,10 +1,3 @@
-"""
-Database engine configuration and session management.
-
-Uses SQLAlchemy with PostgreSQL. Connection URL is read from
-the DATABASE_URL environment variable set in docker-compose.
-"""
-
 import os
 
 from sqlalchemy import create_engine
@@ -18,12 +11,10 @@ DATABASE_URL = os.getenv(
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 Base = declarative_base()
 
-
 def get_db():
-    """FastAPI dependency that yields a database session and closes it after use."""
+    """Yields a database session."""
     db = SessionLocal()
     try:
         yield db
